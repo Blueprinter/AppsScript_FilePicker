@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <?!= cntntGet(["CSS_Picker",'CSS_Index']); ?> 
+  </head>
+  <body>
+    <div id="idFilePkr" style="display:none;"><!-- initially hide -->
+      <?!= HtmlService.createTemplateFromFile('HTML_FilePkr').evaluate().getContent(); ?>
+    </div>
+
+    <button onmouseup="AlanWells_resetErr(); AlanWells_stepOneFilePkr('src')">File Picker</button>
+
+    <div id="idMsgArea">
+      <div id="idMsgDiv">Message Area</div>
+      <br/>
+      <div id="idReturnedContent">Message Content Area</div>
+    </div>
+
+  </body>
+  <?!= HtmlService.createHtmlOutputFromFile('JS_Picker').getContent(); ?>
+  <?!= HtmlService.createHtmlOutputFromFile('JS_Index').getContent(); ?>
+  <?!= HtmlService.createHtmlOutputFromFile('JS_Library').getContent(); ?>
+</html>
+
+
