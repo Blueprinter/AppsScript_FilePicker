@@ -1,0 +1,17 @@
+function doGet() {
+  var h;
+  
+  h = HtmlService.createTemplateFromFile('index').evaluate();
+  
+  
+  return h.setTitle('File Picker').setSandboxMode(HtmlService.SandboxMode.IFRAME);
+};
+
+function cntntGet(a){try{//a - array of file names, h - html, f - file name
+  var h,f,i;h="";f="";
+  for (i=0;i<a.length;i+=1) {
+    f=a[i];
+    h = h + HtmlService.createHtmlOutputFromFile(f).getContent();
+  };
+  return h;
+}catch(e){sendMsg(e,'cntntGet','include','a: '+a);return '<div>Error getting HTML Content!</div>';};};
