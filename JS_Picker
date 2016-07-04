@@ -1,0 +1,103 @@
+<script>
+  window.AlanWells_stepOneFilePkr = function() {
+    var folder;
+    document.getElementById("idFilePkr").style.display = "inline";
+    folder = document.getElementById("idFolders").value;
+    console.log(folder);
+    
+    if (folder === 'DDZQRF111') {
+      AlanWells_mkPckr();
+    };
+  };
+
+  window.AlanWells_mkPckr=function(){
+    var folder;
+    folder = document.getElementById("idFolders").value;
+    google.script.run
+      .withFailureHandler(AlanWells_failure)
+      .withSuccessHandler(AlanWells_shwShList)
+      .buildFildPkrFileList(folder,'sh','dtaDrkrWuz(this)');
+  };
+
+  window.AlanWells_shwShList = function(strObjSheets) {
+    //console.log('strObjSheets: ' + strObjSheets);
+    
+    if (strObjSheets) {
+      document.getElementById('tblFilesList').innerHTML = strObjSheets;
+    } else {
+      document.getElementById('tblFilesList').innerHTML = '<div>No SPREADSHEET FILES in this Folder</div>';
+    };
+
+    AlanWells_Spnnr_Pkr_Off();
+    document.getElementById('tblFilesList').style.backgroundColor = "#b5d5a7";
+    document.getElementById('idPleaseWait').style.display = 'none';
+  };
+
+  window.AlanWells_Spnnr_Pkr_Off = function() {
+    document.getElementById('idPckSpnr').innerHTML = "";
+    document.getElementById('idPckSpnr').style.display = 'none';
+  };
+  
+  window.dtaDrkrWuz = function(theElmt) {
+    var theID,theSheetName;
+    if (window.AlanWells_lineLastChoosen) {
+      window.AlanWells_lineLastChoosen.setAttribute("style","background-color:#b5d5a7; color:black;");//Reset previosly chosen line colors
+    };
+
+    theSheetName = theElmt.childNodes[0].innerHTML;
+    theID = theElmt.childNodes[1].textContent;
+    theElmt.setAttribute("style","background-color:#4a86e8;color:#990000;");
+
+    window.AlanWells_lineLastChoosen = theElmt;
+    window.AlanWells_ssInfo = theSheetName + "," + theID;
+    document.getElementById('idBtnSlct').removeAttribute('disabled'); //clear disabled attribute on Save btn
+  };
+
+window.slctBtnWuzClkt = function() {
+  var arryLastChoosenSS,objPcktCalInfo,strJSON;
+  
+  if (typeof(Storage) !== "undefined") {//Browser has local storage      
+    window.sessionStorage.setItem("FormToCal_wuzSbmtid","y"); //Set to yes      
+    objPcktCalInfo = {};
+
+    arryLastChoosenSS = window.AlanWells_ssInfo.split(",");
+    objPcktCalInfo.ssName = arryLastChoosenSS[0];
+    objPcktCalInfo.ssID = arryLastChoosenSS[1];
+    //objPcktCalInfo.url = arryLastChoosenSS[2];
+
+    strJSON = JSON.stringify(objPcktCalInfo);
+    window.sessionStorage.setItem("DataDrktr_wuzSbmtid","y"); //Set to yes
+    window.sessionStorage.setItem("DataDrktr_pckedInfo", strJSON);
+  } else {google.script.run.reOpenSideBar(arryLastChoosenSS);};
+  
+  google.script.host.close();
+};
+
+window.AlanWells_dsplayErr = function(message) {
+  document.getElementById('result').innerHTML = 'Error: ' + message;
+  zq('show','idRslt');
+};
+  
+window.AlanWells_getMoreFiles = function(whatFldr) {
+  document.getElementById('idPckSpnr').innerHTML = '<div><img src="//c4a54d10381f750e81dcc323aed21e2c95725815.googledrive.com/host/0Bwyqwd2fAHMMallsNkNOV0RfcTg/wait_progress.gif"></div>';
+  document.getElementById('idPckSpnr').style.display = 'inline';
+  google.script.run.withSuccessHandler(AlanWells_shwShList).buildFildPkrFileList(whatFldr,'sh','dtaDrkrWuz(this)');
+};
+  
+window.AlanWells_filePkrCancel = function() {
+
+  if (typeof(Storage) !== "undefined") {//Browser has local storage        
+    window.sessionStorage.setItem("FormToCal_wuzSbmtid","y"); //Set to yes      
+    var objPcktCalInfo = {};
+    objPcktCalInfo.ssID = undefined;
+    var strJSON = JSON.stringify(objPcktCalInfo);
+    window.sessionStorage.setItem("DataDrktr_wuzSbmtid","y"); //Set to yes
+    window.sessionStorage.setItem("DataDrktr_pckedInfo", strJSON);
+  };
+  document.getElementById("idFilePkr").style.display = "none";
+};
+
+window.AlanWells_failure = function() {
+  alert('failure');
+};
+</script>
