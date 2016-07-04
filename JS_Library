@@ -1,0 +1,12 @@
+<script>
+  window.zqShow = function(a) {document.getElementById(a).style.display = 'inline';};
+  window.zqShowBlock = function(a) {document.getElementById(a).style.display = 'block';};
+  window.zqHide = function(a) {document.getElementById(a).style.display = 'none';};
+  window.zqTxt = function(a, b) {
+    if (b !== undefined && b !== "") {
+      document.getElementById(a).textContent = b;
+    } else {
+      return document.getElementById(a).textContent;
+    };
+  };
+</script>
