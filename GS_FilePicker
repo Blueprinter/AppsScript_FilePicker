@@ -1,0 +1,111 @@
+function buildFildPkrFileList(whatFldr,type,fncNameToAdd,getUrl) {
+  var arrFileInfo2D,arrFileNames,arrFileIDs,arrFileURLs,i,L,strData,typeName;
+  strData="";
+  arrFileInfo2D = getFilesOfType(whatFldr,type,getUrl);
+  arrFileNames = arrFileInfo2D[0];
+  arrFileIDs = arrFileInfo2D[1];
+  arrFileURLs = arrFileInfo2D[2];
+  
+  L = arrFileNames.length;
+  getUrl = getUrl==='getUrl';
+  
+  typeName = type==='sh'?'Spreadsheet':'Form';
+  
+  if (L===0) {return "<div>There are no " + typeName + " files in this folder</div>"};
+
+  for (i=0;i<L;i+=1) {
+    if (arrFileNames[i] === "") {continue;};
+    strData = strData + '<div class="flPkrLine" onmouseup="' + fncNameToAdd + '">' +
+    '<div class="flPkNameCell">' + arrFileNames[i] + '</div>' +
+    '<div style="display:none">' + arrFileIDs[i] + '</div>';
+    if (getUrl) {
+      strData = strData + '<div style="display:none">' + arrFileURLs[i] + '</div>'
+    };
+      
+    strData = strData + '</div>';
+  };
+
+  return strData;
+};
+
+function getFilesOfType(whatFldr,type,getUrl) {
+  var arrFileID,arrFileName,arrayOfFldrs,arrFileUrls,allFldrs,i,L,ssFiles,thisFile,fType;
+  arrayOfFldrs=[];
+  arrFileID=[];
+  arrFileName=[];
+  arrFileUrls=[];
+  try{
+  if (typeof whatFldr !== 'string' || whatFldr === undefined || whatFldr ==="" || whatFldr === "DDZQRF111") {
+    allFldrs = DriveApp.getRootFolder();
+    arrayOfFldrs.push(allFldrs);
+  } else {
+    allFldrs = DriveApp.getFoldersByName(whatFldr);
+    while (allFldrs.hasNext()){arrayOfFldrs.push(allFldrs.next());};
+  };
+
+  if (type === 'sh') {
+    fType = MimeType.GOOGLE_SHEETS;
+  } else {
+    fType = MimeType.GOOGLE_FORMS;
+  };
+
+  L=arrayOfFldrs.length;
+  for (i=0;i<L;i+=1) {
+    ssFiles = arrayOfFldrs[i].getFilesByType(fType);
+
+    while (ssFiles.hasNext()) {
+      thisFile=ssFiles.next();
+      arrFileName.push(thisFile.getName());
+      arrFileID.push(thisFile.getId());
+      if (getUrl==='getUrl') {arrFileUrls.push(thisFile.getUrl());};
+    };
+  };
+  return [arrFileName,arrFileID,arrFileUrls];
+  } catch(e) {sendMsg(e,'getFilesOfType',undefined,'There was an error getting a list of files');return '<div>Error getting files</div>';};
+};
+
+function getUsrFldrs() {
+  var allFldrs,arryToExclude,fldrNames,nameOf,thisFldr;
+  try{
+  allFldrs = DriveApp.getFolders();
+  fldrNames = "";
+  arryToExclude = ['css','fonts','images','js','scss','less','cs','bootstrap','font-awesome'];
+  
+  while (allFldrs.hasNext()) {
+    thisFldr = allFldrs.next();
+    nameOf = thisFldr.getName();
+    if (arryToExclude.indexOf(nameOf)!== -1) {continue;};
+    if (!nameOf) {continue;};//If there is no good folder name keep looping
+    if (nameOf.indexOf("<") !== -1) {
+      nameOf = nameOf.replace(/\</g,"");
+    };
+
+    if (fldrNames === "") {
+      fldrNames = '<option>' + nameOf + '</option>';
+    } else {
+      fldrNames = fldrNames + '<option>' + nameOf + '</option>';
+    };
+  };
+  return fldrNames;
+  } catch(e) {
+    sendMsg(e,'getUsrFldrs',undefined,'There was an error getting the folder names');
+    return "<option>Error Getting Folder Names</option>";
+  };
+};
+
+function savedToFrmSet(a) {
+  var fName;
+  fName = gPrp('DtaDrktr_toFrmName');
+  if (!fName) {fName = "No Saved Target Form";};
+  return fName;
+};
+
+function savedToFrmUrl(a) {
+  var u;
+  
+  u = gPrp('DtaDrktr_toFrmID');
+  if (typeof u !== 'string' || u === "") {
+    u = "";
+  };
+  return u;
+};
