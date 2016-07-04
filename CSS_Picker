@@ -1,0 +1,15 @@
+<style>
+  #idPickerBlock {margin-left:40px;};
+  #tblFilesList {display:block;width:100%;height:353px;overflow-x: hidden;overflow-y:scroll;margin-bottom:20px;}
+  #idPleaseWait {width: 100%;position: absolute;left:25%;top:65%;color:#ffffff;}
+  .flPkrLine {border-bottom: solid 1px #d9d9d9;height:35px;width: 95%;padding-left: 12px;cursor: pointer;}
+  #titleFilePkr {width:100%;border-bottom:solid 2px #b3a6d4;}
+  #titleOne {display:inline-block;width:23%;}
+  #fromTxt {display:inline-block;width:6%;}
+  #idFolders {display:inline-block;width:35%;}
+  #titleTwo {display:inline-block;margin-left:20px;width: 10%;}
+  .flPkNameCell {height:35px;width: 95%;padding-left: 12px;padding-top: 8px;cursor: pointer;}
+  .cellTwoCSS {display:inline-block;vertical-align: middle;margin-top: 8px;padding-left: 20px;}
+  .pickedSettings {width: 95%;display: block;}
+  #idPckSpnr {position: absolute;left:42%;top:35%;}
+</style>
