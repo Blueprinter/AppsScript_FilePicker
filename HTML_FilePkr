@@ -1,0 +1,30 @@
+<div id="idPickerBlock">
+  <div id="idPckSpnr" style="display:inline">
+    <div>
+      <img src="">
+    </div>
+  </div>
+
+  <div id="idPleaseWait">Please Wait - Loading Spreadsheet File Names</div>
+
+  <div id="idRslt" style="display:none">
+    <p id='result'></p>
+  </div>
+
+  <div id="titleFilePkr">
+    <h2 id="titleOne">Spreadsheets</h2>
+     <div id="fromTxt">from</div>
+     <select id="idFolders" onchange="AlanWells_getMoreFiles(this.value)">
+       <option value="DDZQRF111">Root Folder</option>
+       <?!= getUsrFldrs(); ?>
+    </select>
+    <!-- <h2 id="titleTwo">Owner</h2> -->
+  </div>
+  
+  <div id="tblFilesList" style="background-color:#0c343d;"></div>
+
+  <div id="idSectionBtn">
+    <button id="idBtnSlct" class="action" onmouseup="slctBtnWuzClkt()" disabled="disabled">Select</button>
+    <button onmouseup="AlanWells_filePkrCancel()">Cancel</button>
+  </div>
+</div>
