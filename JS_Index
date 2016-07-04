@@ -1,0 +1,72 @@
+<script>
+  window.showErrMsg = function(msgKey) {
+    var msg,msgElmt,objOfMsgs;
+    objOfMsgs = {'noSrc':"You have not choosen a Source File!", 'noTrgt':"You have not choosen a Target File!"};
+    msg = objOfMsgs[msgKey];
+      
+    msgElmt = document.getElementById("idMsgDiv");
+    msgElmt.textContent = msg;
+    msgElmt.style.backgroundColor = "#ffff00";
+    msgElmt.style.color = "red";
+    msgElmt.style.fontWeight = "700";
+  };
+
+    window.wuzUpdateDone = function(rtrn) {
+      console.log('wuzUpdateDone ran: ' + rtrn);
+      var msg = "";
+      if (rtrn === 'good') {
+        msg = "The target file was updated";
+        document.getElementById("idMsgDiv").style.backgroundColor = "green";
+        document.getElementById("idReturnedContent").textContent = ""; 
+      } else if (rtrn.slice(0,12) === "missingNames") {
+        msg = "Target File is Missing files that are in the Source!";
+        //console.log(rtrn.slice(13));
+
+        document.getElementById("idReturnedContent").innerHTML = 'Missing Files! <br/>' + rtrn.slice(13);
+        document.getElementById("idMsgDiv").style.backgroundColor = "red";
+      };
+      
+      AlanWells_SpnrOffEmail();
+      document.getElementById("idMsgDiv").textContent = msg;
+    };
+  window.AlanWells_SpnrOffEmail = function() {
+    var el = document.getElementById("idEmailSpnr");
+    el.innerHTML = "";
+    el.style.display = "none";
+  };
+
+    window.serverError = function(err) {
+      //console.log('serverError ran');
+      document.getElementById("idMsgDiv").textContent = "There was a server error: " + err.message;
+    };
+
+    window.AlanWells_resetErr = function() {
+      document.getElementById("idMsgDiv").style.backgroundColor = "";
+      document.getElementById("idMsgDiv").textContent = "Message Area";
+      document.getElementById("idReturnedContent").style.backgroundColor = "";
+      document.getElementById("idReturnedContent").textContent = "Content Area";     
+    };
+window.fncShowUpdateFile = function() {
+  //console.log('fncShowUpdateFile ran');
+  document.getElementById("idGetNamesTab").style.display = 'none';
+  document.getElementById("idSection2UpdateFile").style.display = 'inline';
+  document.getElementById("idTargetFileSection").style.display = 'inline';
+  document.getElementById("idAppTitle").innerHTML = "<strong>Update Apps Script</strong> - Use the file picker to choose the source and target.";
+};
+
+window.fncShowGetNames = function() {
+  //console.log('fncShowGetNames ran');
+  document.getElementById("idSection2UpdateFile").style.display = 'none';
+  document.getElementById("idTargetFileSection").style.display = 'none';
+  document.getElementById("idGetNamesTab").style.display = 'inline';
+  document.getElementById("idAppTitle").innerHTML = "<strong>Get GS Function Names</strong> - Use the file picker to choose the source.";
+  
+};
+
+window.AlanWells_shwSpnr = function() {
+  var daSpinHtml = '<div><img src="//c4a54d10381f750e81dcc323aed21e2c95725815.googledrive.com/host/0Bwyqwd2fAHMMallsNkNOV0RfcTg/wait_progress.gif"></div>';
+  var el = document.getElementById("idEmailSpnr");
+  el.innerHTML = daSpinHtml;
+  el.style.display = "inline";
+};
+</script>
